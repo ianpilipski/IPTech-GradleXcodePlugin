@@ -1,0 +1,32 @@
+plugins {
+    id 'groovy'
+    id 'java-gradle-plugin'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+}
+
+version = '0.1.0'
+group 'com.iptech.gradle'
+description = 'A plugin that will build xcode projects'
+
+gradlePlugin {
+    plugins {
+        unityPlugin {
+            id = 'com.iptech.gradle.xcode-plugin'
+            displayName = 'IPTech Xcode Plugin'
+            description = 'A plugin that will build xcode projects'
+            implementationClass = 'com.iptech.gradle.xcode.XcodePlugin'
+        }
+    }
+}
+
+dependencies {
+    implementation gradleApi()
+}

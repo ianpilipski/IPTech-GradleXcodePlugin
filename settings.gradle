@@ -1,0 +1,3 @@
+rootProject.name = 'iptech-gradlexcodeplugin'
+include 'iptech-xcode-plugin'
+
