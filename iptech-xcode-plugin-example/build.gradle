@@ -7,3 +7,14 @@ buildscript {
 plugins {
     id 'com.iptech.gradle.xcode-plugin'
 }
+
+xcode {
+    projectPath = layout.projectDirectory.dir('xcode-project.xcodeproj')
+    derivedDataPath = layout.buildDirectory.dir('xcode/DerivedData')
+    buildTypes {
+        Debug {
+            configuration = 'Debug'
+            scheme = 'xcode-project'
+        }
+    }
+}

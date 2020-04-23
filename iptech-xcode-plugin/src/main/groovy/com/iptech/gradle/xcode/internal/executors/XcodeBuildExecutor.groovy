@@ -23,8 +23,14 @@ class XcodeBuildExecutor {
         if(spec.derivedDataPath.isPresent()) args << '-derivedDataPath' << spec.derivedDataPath.get().asFile.absolutePath
         if(spec.exportOptionsPlist.isPresent()) args << '-exportOptionsPlist' << spec.exportOptionsPlist.get().asFile.absolutePath
         if(spec.exportPath.isPresent()) args << '-exportPath' << spec.exportPath.get().asFile.absolutePath
-        if(spec.workspace.isPresent()) args << '-workspace' << spec.workspace.get().asFile.absolutePath
-        if(spec.project.isPresent()) args << '-project' << spec.project.get().asFile.absolutePath
+        if(spec.projectPath.isPresent()) {
+            File file = spec.projectPath.get().asFile
+            if(file.name.endsWith('.xcodeproj')) {
+                args << '-project' << file.absolutePath
+            } else {
+                args << '-workspace' << file.absolutePath
+            }
+        }
         if(spec.additionalArguments.size()>0) args.addAll(spec.additionalArguments.get().asList())
 
         return execOperations.exec { ExecSpec es ->

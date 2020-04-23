@@ -1,6 +1,6 @@
 package com.iptech.gradle.xcode.internal.executors
 
-import com.iptech.gradle.xcode.XcodeExtension
+
 import com.iptech.gradle.xcode.api.ArchiveSpec
 import com.iptech.gradle.xcode.api.XcodeBuildSpec
 import org.gradle.api.model.ObjectFactory
@@ -22,11 +22,10 @@ class ArchiveExecutor {
         XcodeBuildSpec spec = objectFactory.newInstance(XcodeBuildSpec.class)
         spec.configuration = archiveSpec.configuration
         spec.scheme = archiveSpec.scheme
-        spec.archivePath = archiveSpec.archivePath
         spec.derivedDataPath = archiveSpec.derivedDataPath
-        spec.xcodeWorkspace = archiveSpec.xcodeWorkspace
-        spec.xcodeProject = archiveSpec.xcodeProject
+        spec.projectPath = archiveSpec.projectPath
         spec.additionalArguments = archiveSpec.additionalArguments
+        spec.archivePath = archiveSpec.archivePath
 
         if(archiveSpec.CODE_SIGN_IDENTITY.isPresent()) spec.additionalArguments.add(archiveSpec.CODE_SIGN_IDENTITY.get())
         if(archiveSpec.CODE_SIGN_STYLE.isPresent()) spec.additionalArguments.add(archiveSpec.CODE_SIGN_STYLE.get())
@@ -35,6 +34,7 @@ class ArchiveExecutor {
         if(archiveSpec.CODE_SIGNING_REQUIRED.isPresent()) spec.additionalArguments.add(archiveSpec.CODE_SIGNING_REQUIRED.get())
         if(archiveSpec.CODE_SIGNING_ALLOWED.isPresent()) spec.additionalArguments.add(archiveSpec.CODE_SIGNING_ALLOWED.get())
 
-        return xcodeBuildExecutor.xcodeBuild(spec)
+        spec.additionalArguments.add('archive')
+        return xcodeBuildExecutor.exec(spec)
     }
 }

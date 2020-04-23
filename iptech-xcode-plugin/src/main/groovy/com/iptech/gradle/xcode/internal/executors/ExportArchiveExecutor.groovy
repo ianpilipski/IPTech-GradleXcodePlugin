@@ -24,6 +24,7 @@ class ExportArchiveExecutor {
         spec.archivePath = exportArchiveSpec.archivePath
         spec.exportOptionsPlist = exportArchiveSpec.exportOptionsPlist
         spec.exportPath = exportArchiveSpec.exportPath
+        spec.additionalArguments.addAll(['clean', 'archive'])
 
         return xcodeBuildExecutor.exec(spec)
     }

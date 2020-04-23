@@ -8,6 +8,6 @@ import org.gradle.process.ExecResult
 abstract class ExportArchive extends DefaultTask implements ExportArchiveSpec {
     @TaskAction
     ExecResult exec() {
-        return project.xcode.exportArchive(spec)
+        return project.xcode.exportArchive(this)
     }
 }
