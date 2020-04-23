@@ -10,7 +10,6 @@ plugins {
 
 xcode {
     projectPath = layout.projectDirectory.dir('xcode-project.xcodeproj')
-    derivedDataPath = layout.buildDirectory.dir('xcode/DerivedData')
     buildTypes {
         'xcode-project-debug' {
             configuration = 'Debug'

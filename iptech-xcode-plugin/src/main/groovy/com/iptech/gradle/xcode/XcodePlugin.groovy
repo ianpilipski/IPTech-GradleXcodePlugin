@@ -37,6 +37,9 @@ class XcodePlugin implements Plugin<Project> {
     }
 
     private void establishConventions() {
+        xcode.buildDirectory.convention(project.layout.buildDirectory.dir('xcode'))
+        xcode.derivedDataPath.convention(xcode.buildDirectory.map { it.dir('DerivedData') })
+
         project.tasks.withType(XcodeProjectPathSpec).configureEach {
             projectPath.convention(xcode.projectPath)
         }
@@ -62,7 +65,9 @@ class XcodePlugin implements Plugin<Project> {
     }
 
     private void buildTypeAdded(BuildType buildType) {
-        buildType.archivePath.convention(project.layout.buildDirectory.dir("archives/${buildType.name}.xcarchive"))
+        XcodeExtension xcode = this.xcode
+
+        buildType.archivePath.convention(xcode.buildDirectory.dir("archives/${buildType.name}.xcarchive"))
 
         project.tasks.xcodeClean.dependsOn(
             project.tasks.create("xcodeClean${buildType.name}", Clean) {
@@ -77,7 +82,7 @@ class XcodePlugin implements Plugin<Project> {
         }
 
         buildType.exportArchives.all { ExportArchiveType eat ->
-            eat.exportPath.convention(project.layout.buildDirectory.dir("archives-exported/${buildType.name}-${eat.name}"))
+            eat.exportPath.convention(xcode.buildDirectory.dir("archives-exported/${buildType.name}-${eat.name}"))
             eat.archivePath.convention(buildType.archivePath)
 
             project.tasks.create("xcodeExportArchive${buildType.name}-${eat.name}", ExportArchive) {
