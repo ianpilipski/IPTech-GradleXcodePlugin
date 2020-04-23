@@ -2,6 +2,7 @@ package com.iptech.gradle.xcode
 
 import com.iptech.gradle.xcode.api.ArchiveSpec
 import com.iptech.gradle.xcode.api.BuildType
+import com.iptech.gradle.xcode.api.ExportArchiveType
 import com.iptech.gradle.xcode.api.XcodeBuildSpec
 import com.iptech.gradle.xcode.api.XcodeProjectPathSpec
 import com.iptech.gradle.xcode.tasks.Archive
@@ -9,6 +10,7 @@ import com.iptech.gradle.xcode.tasks.Clean
 import com.iptech.gradle.xcode.tasks.ExportArchive
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 
 class XcodePlugin implements Plugin<Project> {
     private Project project
@@ -68,14 +70,23 @@ class XcodePlugin implements Plugin<Project> {
             }
         )
 
-        project.tasks.create("xcodeArchive${buildType.name}", Archive) {
+        Task taskArchive = project.tasks.create("xcodeArchive${buildType.name}", Archive) {
             scheme = buildType.scheme
             configuration = buildType.configuration
             archivePath = buildType.archivePath
         }
 
-        project.tasks.create("xcodeExportArchive${buildType.name}", ExportArchive) {
+        buildType.exportArchives.all { ExportArchiveType eat ->
+            eat.exportPath.convention(project.layout.buildDirectory.dir("archives-exported/${buildType.name}-${eat.name}"))
+            eat.archivePath.convention(buildType.archivePath)
 
+            project.tasks.create("xcodeExportArchive${buildType.name}-${eat.name}", ExportArchive) {
+                exportPath = eat.exportPath
+                exportOptionsPlist = eat.exportOptionsPlist
+                archivePath = eat.archivePath
+
+                dependsOn(taskArchive)
+            }
         }
     }
 }

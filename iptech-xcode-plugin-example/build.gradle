@@ -12,9 +12,29 @@ xcode {
     projectPath = layout.projectDirectory.dir('xcode-project.xcodeproj')
     derivedDataPath = layout.buildDirectory.dir('xcode/DerivedData')
     buildTypes {
-        Debug {
+        'xcode-project-debug' {
             configuration = 'Debug'
             scheme = 'xcode-project'
+            exportArchives {
+                dev {
+                    exportOptionsPlist = file('export-plists/export-development.plist')
+                }
+                adhoc {
+                    exportOptionsPlist = file('export-plists/export-adhoc.plist')
+                }
+            }
+        }
+        'xcode-project-release' {
+            configuration = 'Release'
+            scheme = 'xcode-project'
+            exportArchives {
+                dev {
+                    exportOptionsPlist = file('export-plists/export-development.plist')
+                }
+                appstore {
+                    exportOptionsPlist = file('export-plists/export-app-store.plist')
+                }
+            }
         }
     }
 }
