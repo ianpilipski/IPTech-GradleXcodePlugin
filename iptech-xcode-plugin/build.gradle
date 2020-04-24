@@ -30,7 +30,7 @@ group 'com.iptech.gradle'
 description = 'A plugin that will build xcode projects'
 
 pluginBundle {
-    website = 'https://github.com/ianpilipski'
+    website = 'https://github.com/ianpilipski/IPTech-GradleXcodePlugin'
     vcsUrl = 'https://github.com/ianpilipski/IPTech-GradleXcodePlugin'
     tags = ['xcode', 'iptech']
 }
