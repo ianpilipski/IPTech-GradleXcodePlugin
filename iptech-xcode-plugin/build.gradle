@@ -13,7 +13,7 @@ repositories {
 //allow publish key/secret override from environment variable
 task setupPluginUpload {
     doLast {
-        String key = System.env.gradlePublishkey
+        String key = System.env.gradlePublishKey
         String secret = System.env.gradlePublishSecret
         if(!key || !secret) {
             throw new RuntimeException("gradlePublishKey and/or gradlePublishSecret are not defined environment variables")
