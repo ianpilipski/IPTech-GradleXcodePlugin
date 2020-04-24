@@ -15,6 +15,7 @@ import org.gradle.api.Task
 class XcodePlugin implements Plugin<Project> {
     private Project project
     private XcodeExtension xcode
+    private BuildType defaultBuildType
 
     @Override
     void apply(Project project) {
@@ -66,6 +67,7 @@ class XcodePlugin implements Plugin<Project> {
 
     private void buildTypeAdded(BuildType buildType) {
         XcodeExtension xcode = this.xcode
+        if(!defaultBuildType) defaultBuildType = buildType
 
         buildType.archivePath.convention(xcode.buildDirectory.dir("archives/${buildType.name}.xcarchive"))
 
@@ -81,6 +83,19 @@ class XcodePlugin implements Plugin<Project> {
             archivePath = buildType.archivePath
         }
 
+        Task taskAssemble = project.tasks.create("assemble${buildType.name}") {
+            group 'build'
+        }
+
+        Task taskBuild = project.tasks.create("build${buildType.name}") {
+            group 'build'
+            dependsOn(taskAssemble) //TODO: add check tasks for Xcode
+        }
+
+        if(defaultBuildType == buildType) {
+            project.tasks.assemble.dependsOn(taskAssemble)
+        }
+
         buildType.exportArchives.all { ExportArchiveType eat ->
             eat.exportPath.convention(xcode.buildDirectory.dir("archives-exported/${buildType.name}-${eat.name}"))
             eat.archivePath.convention(buildType.archivePath)
@@ -91,6 +106,7 @@ class XcodePlugin implements Plugin<Project> {
                 archivePath = eat.archivePath
 
                 dependsOn(taskArchive)
+                taskAssemble.dependsOn(delegate)
             }
         }
     }

@@ -18,9 +18,6 @@ xcode {
                 dev {
                     exportOptionsPlist = file('export-plists/export-development.plist')
                 }
-                adhoc {
-                    exportOptionsPlist = file('export-plists/export-adhoc.plist')
-                }
             }
         }
         'xcode-project-release' {
@@ -29,9 +26,6 @@ xcode {
             exportArchives {
                 dev {
                     exportOptionsPlist = file('export-plists/export-development.plist')
-                }
-                appstore {
-                    exportOptionsPlist = file('export-plists/export-app-store.plist')
                 }
             }
         }
