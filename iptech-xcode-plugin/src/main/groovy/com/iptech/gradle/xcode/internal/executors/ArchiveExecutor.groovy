@@ -27,12 +27,24 @@ class ArchiveExecutor {
         spec.additionalArguments = archiveSpec.additionalArguments
         spec.archivePath = archiveSpec.archivePath
 
-        if(archiveSpec.CODE_SIGN_IDENTITY.isPresent()) spec.additionalArguments.add(archiveSpec.CODE_SIGN_IDENTITY.get())
-        if(archiveSpec.CODE_SIGN_STYLE.isPresent()) spec.additionalArguments.add(archiveSpec.CODE_SIGN_STYLE.get())
-        if(archiveSpec.DEVELOPMENT_TEAM.isPresent()) spec.additionalArguments.add(archiveSpec.DEVELOPMENT_TEAM.get())
-        if(archiveSpec.PROVISIONING_PROFILE_SPECIFIER.isPresent()) spec.additionalArguments.add(archiveSpec.PROVISIONING_PROFILE_SPECIFIER.get())
-        if(archiveSpec.CODE_SIGNING_REQUIRED.isPresent()) spec.additionalArguments.add(archiveSpec.CODE_SIGNING_REQUIRED.get())
-        if(archiveSpec.CODE_SIGNING_ALLOWED.isPresent()) spec.additionalArguments.add(archiveSpec.CODE_SIGNING_ALLOWED.get())
+        if(archiveSpec.CODE_SIGN_IDENTITY.isPresent()) spec.additionalArguments.add(
+            "CODE_SIGN_IDENTITY=${archiveSpec.CODE_SIGN_IDENTITY.get()}"
+        )
+        if(archiveSpec.CODE_SIGN_STYLE.isPresent()) spec.additionalArguments.add(
+            "CODE_SIGN_STYLE=${archiveSpec.CODE_SIGN_STYLE.get()}"
+        )
+        if(archiveSpec.DEVELOPMENT_TEAM.isPresent()) spec.additionalArguments.add(
+            "DEVELOPMENT_TEAM=${archiveSpec.DEVELOPMENT_TEAM.get()}"
+        )
+        if(archiveSpec.PROVISIONING_PROFILE_SPECIFIER.isPresent()) spec.additionalArguments.add(
+            "PROVISIONING_PROFILE_SPECIFIER=${archiveSpec.PROVISIONING_PROFILE_SPECIFIER.get()}"
+        )
+        if(archiveSpec.CODE_SIGNING_REQUIRED.isPresent()) spec.additionalArguments.add(
+            "CODE_SIGNING_REQUIRED=${archiveSpec.CODE_SIGNING_REQUIRED.get()}"
+        )
+        if(archiveSpec.CODE_SIGNING_ALLOWED.isPresent()) spec.additionalArguments.add(
+            "CODE_SIGNING_ALLOWED=${archiveSpec.CODE_SIGNING_ALLOWED.get()}"
+        )
 
         spec.additionalArguments.add('archive')
         return xcodeBuildExecutor.exec(spec)
