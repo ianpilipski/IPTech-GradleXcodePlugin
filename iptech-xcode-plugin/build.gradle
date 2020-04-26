@@ -37,7 +37,7 @@ pluginBundle {
 
 gradlePlugin {
     plugins {
-        unityPlugin {
+        xcodePlugin {
             id = 'com.iptech.gradle.xcode-plugin'
             displayName = 'IPTech Xcode Plugin'
             description = 'A plugin that will build xcode projects'
@@ -48,4 +48,6 @@ gradlePlugin {
 
 dependencies {
     implementation gradleApi()
+    testImplementation('org.codehaus.groovy:groovy-all:2.5.7')
+    testImplementation('org.spockframework:spock-core:1.3-groovy-2.5')
 }

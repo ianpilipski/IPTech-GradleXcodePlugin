@@ -3,11 +3,13 @@ package com.iptech.gradle.xcode
 import com.iptech.gradle.xcode.api.ArchiveSpec
 import com.iptech.gradle.xcode.api.BuildType
 import com.iptech.gradle.xcode.api.ExportArchiveType
+import com.iptech.gradle.xcode.api.InstallProvisioningProfilesSpec
 import com.iptech.gradle.xcode.api.XcodeBuildSpec
 import com.iptech.gradle.xcode.api.XcodeProjectPathSpec
 import com.iptech.gradle.xcode.tasks.Archive
 import com.iptech.gradle.xcode.tasks.Clean
 import com.iptech.gradle.xcode.tasks.ExportArchive
+import com.iptech.gradle.xcode.tasks.InstallProvisioningProfiles
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -16,6 +18,7 @@ class XcodePlugin implements Plugin<Project> {
     private Project project
     private XcodeExtension xcode
     private BuildType defaultBuildType
+    private Task installProfilesTask
 
     @Override
     void apply(Project project) {
@@ -23,7 +26,7 @@ class XcodePlugin implements Plugin<Project> {
         applyBasePlugin()
         createXcodeExtension()
         establishConventions()
-        createCleanTask()
+        createCoreTasks()
         xcode.buildTypes.all(this.&buildTypeAdded)
     }
 
@@ -59,10 +62,23 @@ class XcodePlugin implements Plugin<Project> {
             projectPath.convention(xcode.projectPath)
             derivedDataPath.convention(xcode.derivedDataPath)
         }
+
+        project.tasks.withType(InstallProvisioningProfilesSpec).configureEach {
+            provisioningProfiles.convention(xcode.provisioningProfiles)
+        }
+    }
+
+    private void createCoreTasks() {
+        createCleanTask()
+        createInstallProfilesTask()
     }
 
     private void createCleanTask() {
         project.tasks.clean.dependsOn(project.tasks.create('xcodeClean'))
+    }
+
+    private void createInstallProfilesTask() {
+        installProfilesTask = project.tasks.create("xcodeInstallProvisioningProfiles", InstallProvisioningProfiles)
     }
 
     private void buildTypeAdded(BuildType buildType) {
@@ -81,6 +97,7 @@ class XcodePlugin implements Plugin<Project> {
             scheme = buildType.scheme
             configuration = buildType.configuration
             archivePath = buildType.archivePath
+            dependsOn(installProfilesTask)
         }
 
         Task taskAssemble = project.tasks.create("assemble${buildType.name}") {
