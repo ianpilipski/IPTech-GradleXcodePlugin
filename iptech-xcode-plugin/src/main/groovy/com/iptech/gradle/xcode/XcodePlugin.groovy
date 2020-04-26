@@ -86,6 +86,7 @@ class XcodePlugin implements Plugin<Project> {
         if(!defaultBuildType) defaultBuildType = buildType
 
         buildType.archivePath.convention(xcode.buildDirectory.dir("archives/${buildType.name}.xcarchive"))
+        buildType.projectPath.convention(xcode.projectPath)
 
         project.tasks.xcodeClean.dependsOn(
             project.tasks.create("xcodeClean${buildType.name}", Clean) {
@@ -97,6 +98,7 @@ class XcodePlugin implements Plugin<Project> {
             scheme = buildType.scheme
             configuration = buildType.configuration
             archivePath = buildType.archivePath
+            projectPath = buildType.projectPath
             dependsOn(installProfilesTask)
         }
 

@@ -14,6 +14,7 @@ abstract class BuildType {
     @Input abstract Property<String> getConfiguration()
     @Input abstract Property<String> getScheme()
     @Input abstract DirectoryProperty getArchivePath()
+    @Input abstract DirectoryProperty getProjectPath()
 
     @Input final NamedDomainObjectContainer<ExportArchiveType> exportArchives
 
