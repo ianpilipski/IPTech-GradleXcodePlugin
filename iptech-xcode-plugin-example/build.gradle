@@ -1,6 +1,6 @@
 buildscript {
     dependencies {
-        classpath group: 'com.iptech.gradle', name: 'iptech-xcode-plugin', version:'0.1.0'
+        classpath group: 'com.iptech.gradle', name: 'iptech-xcode-plugin'
     }
 }
 
