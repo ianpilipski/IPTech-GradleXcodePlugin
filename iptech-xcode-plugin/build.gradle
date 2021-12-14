@@ -2,13 +2,10 @@ plugins {
     id 'groovy'
     id 'java-gradle-plugin'
     id 'com.gradle.plugin-publish' version '0.11.0'
+    id 'maven-publish'
 }
 
 sourceCompatibility = 1.8
-
-repositories {
-    jcenter()
-}
 
 //allow publish key/secret override from environment variable
 task setupPluginUpload {
@@ -25,7 +22,20 @@ task setupPluginUpload {
     tasks.publishPlugins.dependsOn(delegate)
 }
 
-version = '0.1.1'
+publishing {
+    repositories {
+        maven {
+            name = 'GitHubPackages'
+            url = uri("https://maven.pkg.github.com/ianpilipski/IPTech-GradleXcodePlugin")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+}
+
+version = '0.1.2-SNAPSHOT'
 group 'com.iptech.gradle'
 description = 'A plugin that will build xcode projects'
 
@@ -50,4 +60,6 @@ dependencies {
     implementation gradleApi()
     testImplementation('org.codehaus.groovy:groovy-all:2.5.7')
     testImplementation('org.spockframework:spock-core:1.3-groovy-2.5')
+    testImplementation('cglib:cglib-nodep:3.3.0')
+    testImplementation gradleTestKit()
 }

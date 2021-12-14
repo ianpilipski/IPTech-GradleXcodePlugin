@@ -4,12 +4,11 @@ import spock.lang.Specification
 
 class InstallProvisioningProfilesExecutorTest extends Specification {
     def "getUUIDMethod returns UUID of provisioning profile"() {
-        when:
+        given:
         File provisioningProfile = getResourceAsFile('/provisioning-profile.mobileprovision')
-        String uuid = InstallProvisioningProfilesExecutor.getUUID(provisioningProfile)
 
-        then:
-        uuid == '7a8310e3-1a09-44ae-a22b-d18096c0a31b'
+        expect:
+        '7a8310e3-1a09-44ae-a22b-d18096c0a31b' == InstallProvisioningProfilesExecutor.getUUID(provisioningProfile)
     }
 
     private File getResourceAsFile(String resourceName) {
