@@ -14,9 +14,12 @@ xcode {
         'xcode-project-debug' {
             configuration = 'Debug'
             scheme = 'xcode-project'
+            automaticSigning = true
             exportArchives {
                 dev {
                     exportOptionsPlist = file('export-plists/export-development.plist')
+                    validate = true
+                    upload = false
                 }
             }
         }
@@ -26,6 +29,8 @@ xcode {
             exportArchives {
                 dev {
                     exportOptionsPlist = file('export-plists/export-development.plist')
+                    validate = true
+                    upload = false
                 }
             }
         }

@@ -10,6 +10,8 @@ import com.iptech.gradle.xcode.tasks.Archive
 import com.iptech.gradle.xcode.tasks.Clean
 import com.iptech.gradle.xcode.tasks.ExportArchive
 import com.iptech.gradle.xcode.tasks.InstallProvisioningProfiles
+import com.iptech.gradle.xcode.tasks.TestFlightUpload
+import com.iptech.gradle.xcode.tasks.TestFlightValidate
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -118,14 +120,36 @@ class XcodePlugin implements Plugin<Project> {
         buildType.exportArchives.all { ExportArchiveType eat ->
             eat.exportPath.convention(xcode.buildDirectory.dir("archives-exported/${buildType.name}-${eat.name}"))
             eat.archivePath.convention(buildType.archivePath)
+            eat.upload.convention(false)
+            eat.validate.convention(false)
 
-            project.tasks.create("xcodeExportArchive${buildType.name}-${eat.name}", ExportArchive) {
+            def exportTask = project.tasks.create("xcodeExportArchive${buildType.name}-${eat.name}", ExportArchive) {
                 exportPath = eat.exportPath
                 exportOptionsPlist = eat.exportOptionsPlist
                 archivePath = eat.archivePath
 
                 dependsOn(taskArchive)
                 taskAssemble.dependsOn(delegate)
+            }
+
+            def validateTask = project.tasks.create("xcodeValidateApp${buildType.name}-${eat.name}", TestFlightValidate) {
+                appFile = eat.appFile
+                appType = eat.appType
+                password = eat.password
+                userName = eat.userName
+
+                onlyIf { eat.validate.get() }
+                dependsOn(exportTask)
+            }
+
+            project.tasks.create("xcodeUploadApp${buildType.name}-${eat.name}", TestFlightUpload) {
+                appFile = eat.appFile
+                appType = eat.appType
+                password = eat.password
+                userName = eat.userName
+
+                onlyIf { eat.upload.get() }
+                dependsOn(validateTask, exportTask)
             }
         }
     }

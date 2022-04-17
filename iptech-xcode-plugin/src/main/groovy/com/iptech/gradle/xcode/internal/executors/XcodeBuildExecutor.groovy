@@ -31,6 +31,8 @@ class XcodeBuildExecutor {
                 args << '-workspace' << file.absolutePath
             }
         }
+        if(spec.automaticSigning.isPresent() && spec.automaticSigning.get()) args << '-allowProvisioningUpdates'
+
         if(spec.additionalArguments.size()>0) args.addAll(spec.additionalArguments.get().asList())
 
         return execOperations.exec { ExecSpec es ->

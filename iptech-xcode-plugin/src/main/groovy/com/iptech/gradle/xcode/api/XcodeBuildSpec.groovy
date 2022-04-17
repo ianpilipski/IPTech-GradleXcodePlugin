@@ -14,6 +14,7 @@ interface XcodeBuildSpec {
     @Input @Optional DirectoryProperty getDerivedDataPath()
     @InputFile @Optional RegularFileProperty getExportOptionsPlist()
     @OutputDirectory @Optional DirectoryProperty getExportPath()
+    @Input @Optional Property<Boolean> getAutomaticSigning()
 
     @Input @Optional ListProperty<String> getAdditionalArguments()
 }
