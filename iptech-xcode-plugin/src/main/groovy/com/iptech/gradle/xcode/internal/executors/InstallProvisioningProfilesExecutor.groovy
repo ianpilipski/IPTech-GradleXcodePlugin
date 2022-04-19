@@ -29,6 +29,8 @@ class InstallProvisioningProfilesExecutor {
                 String uuid = getUUID(it)
                 cs.from it
                 cs.rename it.name, "${uuid}.mobileprovision"
+
+                println "Installing Provisioning Profile: ${it.name} (${uuid})"
             }
 
             cs.into intoDir
