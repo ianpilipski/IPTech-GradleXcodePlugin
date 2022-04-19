@@ -4,6 +4,6 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.InputFiles
 
-interface InstallProvisioningProfilesSpec {
+interface ProvisioningProfilesSpec {
     @InputFiles Property<FileCollection> getProvisioningProfiles()
 }

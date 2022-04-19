@@ -3,13 +3,14 @@ package com.iptech.gradle.xcode
 import com.iptech.gradle.xcode.api.ArchiveSpec
 import com.iptech.gradle.xcode.api.BuildType
 import com.iptech.gradle.xcode.api.ExportArchiveType
-import com.iptech.gradle.xcode.api.InstallProvisioningProfilesSpec
+import com.iptech.gradle.xcode.api.ProvisioningProfilesSpec
 import com.iptech.gradle.xcode.api.XcodeBuildSpec
 import com.iptech.gradle.xcode.api.XcodeProjectPathSpec
 import com.iptech.gradle.xcode.tasks.Archive
 import com.iptech.gradle.xcode.tasks.Clean
 import com.iptech.gradle.xcode.tasks.ExportArchive
 import com.iptech.gradle.xcode.tasks.InstallProvisioningProfiles
+import com.iptech.gradle.xcode.tasks.UnInstallProvisioningProfiles
 import com.iptech.gradle.xcode.tasks.TestFlightUpload
 import com.iptech.gradle.xcode.tasks.TestFlightValidate
 import org.gradle.api.Plugin
@@ -21,6 +22,7 @@ class XcodePlugin implements Plugin<Project> {
     private XcodeExtension xcode
     private BuildType defaultBuildType
     private Task installProfilesTask
+    private Task removeProfilesTask
 
     @Override
     void apply(Project project) {
@@ -65,7 +67,7 @@ class XcodePlugin implements Plugin<Project> {
             derivedDataPath.convention(xcode.derivedDataPath)
         }
 
-        project.tasks.withType(InstallProvisioningProfilesSpec).configureEach {
+        project.tasks.withType(ProvisioningProfilesSpec).configureEach {
             provisioningProfiles.convention(xcode.provisioningProfiles)
         }
     }
@@ -80,7 +82,10 @@ class XcodePlugin implements Plugin<Project> {
     }
 
     private void createInstallProfilesTask() {
-        installProfilesTask = project.tasks.create("xcodeInstallProvisioningProfiles", InstallProvisioningProfiles)
+        removeProfilesTask = project.tasks.create("xcodeRemoveProvisioningProfiles", UnInstallProvisioningProfiles)
+        installProfilesTask = project.tasks.create("xcodeInstallProvisioningProfiles", InstallProvisioningProfiles) {
+            dependsOn(removeProfilesTask)
+        }
     }
 
     private void buildTypeAdded(BuildType buildType) {
