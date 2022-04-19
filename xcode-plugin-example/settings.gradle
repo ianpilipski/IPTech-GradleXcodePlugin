@@ -1,0 +1,3 @@
+rootProject.name = 'xcode-plugin-example'
+
+includeBuild('../xcode-plugin')

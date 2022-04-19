@@ -18,7 +18,7 @@ buildscript {
         }   
     }
     dependencies {
-        classpath 'gradle.plugin.com.iptech.gradle:iptech-xcode-plugin:0.1.0'
+        classpath 'gradle.plugin.com.iptech.gradle:xcode-plugin:0.1.0'
     }   
 }
 
