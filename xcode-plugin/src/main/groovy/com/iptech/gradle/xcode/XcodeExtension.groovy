@@ -59,11 +59,11 @@ abstract class XcodeExtension {
         return xcodeBuildExecutor.exec(spec)
     }
 
-    ExecResult exportArchive(Action<? extends ExportArchiveSpec> action) {
+    File exportArchive(Action<? extends ExportArchiveSpec> action) {
         return exportArchiveExecutor.exec(createSpec(ExportArchiveSpec.class, action))
     }
 
-    ExecResult exportArchive(ExportArchiveSpec spec) {
+    File exportArchive(ExportArchiveSpec spec) {
         return exportArchiveExecutor.exec(spec)
     }
 
