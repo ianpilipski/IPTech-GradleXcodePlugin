@@ -11,7 +11,7 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
 abstract class ExportArchive extends DefaultTask implements ExportArchiveSpec {
-    abstract RegularFileProperty getOutput()
+    @OutputFile abstract RegularFileProperty getOutput()
 
     @TaskAction
     File exec() {

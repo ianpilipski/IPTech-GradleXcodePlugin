@@ -6,6 +6,7 @@ import com.iptech.gradle.xcode.api.ExportArchiveType
 import com.iptech.gradle.xcode.api.ProvisioningProfilesSpec
 import com.iptech.gradle.xcode.api.XcodeBuildSpec
 import com.iptech.gradle.xcode.api.XcodeProjectPathSpec
+import com.iptech.gradle.xcode.api.TestFlightUploadConfig
 import com.iptech.gradle.xcode.tasks.Archive
 import com.iptech.gradle.xcode.tasks.Clean
 import com.iptech.gradle.xcode.tasks.ExportArchive
@@ -32,6 +33,7 @@ class XcodePlugin implements Plugin<Project> {
         establishConventions()
         createCoreTasks()
         xcode.buildTypes.all(this.&buildTypeAdded)
+        xcode.testFlightUploads.all(this.&testFlightUploadAdded)
     }
 
     private void applyBasePlugin() {
@@ -157,5 +159,25 @@ class XcodePlugin implements Plugin<Project> {
                 dependsOn(validateTask, exportTask)
             }
         }
+    }
+
+    private void testFlightUploadAdded(TestFlightUploadConfig testFlightUpload) {
+        def validateTask = project.tasks.create("xcodeValidateApp${testFlightUpload.name}", TestFlightValidate) {
+            appFile = testFlightUpload.appFile
+            appType = testFlightUpload.appType
+            password = testFlightUpload.password
+            userName = testFlightUpload.userName
+        }
+
+        project.tasks.create("xcodeUploadApp${testFlightUpload.name}", TestFlightUpload) {
+            group "Deploy"
+            description "Upload ${testFlightUpload.name} to TestFlight"
+            appFile = testFlightUpload.appFile
+            appType = testFlightUpload.appType
+            password = testFlightUpload.password
+            userName = testFlightUpload.userName
+
+            dependsOn(validateTask)
+        } 
     }
 }

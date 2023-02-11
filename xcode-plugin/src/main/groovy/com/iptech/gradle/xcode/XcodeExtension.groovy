@@ -37,12 +37,13 @@ abstract class XcodeExtension {
     @Input @Optional abstract Property<String> getPassword()
 
     final NamedDomainObjectContainer<BuildType> buildTypes
-
+    final NamedDomainObjectContainer<TestFlightUploadConfig> testFlightUploads
 
     @Inject
     XcodeExtension(ObjectFactory objectFactory) {
         this.objectFactory = objectFactory
-        buildTypes = objectFactory.domainObjectContainer(BuildType)
+        this.buildTypes = objectFactory.domainObjectContainer(BuildType)
+        this.testFlightUploads = objectFactory.domainObjectContainer(TestFlightUploadConfig)
         this.xcodeBuildExecutor = objectFactory.newInstance(XcodeBuildExecutor.class)
         this.resignAppExecutor = objectFactory.newInstance(ResignAppExecutor.class)
         this.exportArchiveExecutor = objectFactory.newInstance(ExportArchiveExecutor.class, xcodeBuildExecutor)
