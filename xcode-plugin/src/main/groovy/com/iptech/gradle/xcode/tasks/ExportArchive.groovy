@@ -7,11 +7,11 @@ import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.plugins.Convention
 import org.gradle.api.provider.Provider
-import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 
 abstract class ExportArchive extends DefaultTask implements ExportArchiveSpec {
-    @OutputFile abstract RegularFileProperty getOutput()
+    @Internal abstract RegularFileProperty getOutput()
 
     @TaskAction
     File exec() {
