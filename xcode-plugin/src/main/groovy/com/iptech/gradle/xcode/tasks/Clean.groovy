@@ -21,7 +21,7 @@ abstract class Clean extends DefaultTask implements XcodeProjectPathSpec {
     private final ObjectFactory objectFactory
 
     @Input abstract Property<String> getScheme()
-    @Input @Optional abstract DirectoryProperty getDerivedDataPath()
+    @InputDirectory @Optional abstract DirectoryProperty getDerivedDataPath()
 
     @Inject
     Clean(ObjectFactory objectFactory) {
