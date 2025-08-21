@@ -18,30 +18,40 @@ class TestFlightExecutor {
         List<String> args = [
             'altool', '--validate-app',
             '--type', spec.appType.get(),
-            '--file', spec.appFile.get().asFile.absolutePath,
-            '--username', spec.userName.get(),
-            '--password', spec.password.get()
+            '--file', spec.appFile.get().asFile.absolutePath
+        ]
+        Map<String, String> privateArgs = [
+            '--username': spec.userName.get(),
+            '--password': spec.password.get()
         ]
 
-        return execAlTool(args)
+        return execAlTool(args, privateArgs)
     }
 
     ExecResult upload(TestFlightSpec spec) {
         List<String> args = [
             'altool', '--upload-app',
             '--type', spec.appType.get(),
-            '--file', spec.appFile.get().asFile.absolutePath,
-            '--username', spec.userName.get(),
-            '--password', spec.password.get()
+            '--file', spec.appFile.get().asFile.absolutePath
+        ]
+        Map<String, String> privateArgs = [
+            '--username': spec.userName.get(),
+            '--password': spec.password.get()
         ]
 
-        return execAlTool(args)
+        return execAlTool(args, privateArgs)
     }
 
-    private ExecResult execAlTool(List<String> args) {
-        return execOperations.exec { ExecSpec es ->
+    private ExecResult execAlTool(List<String> args, Map<String, String> privateArgs) {
+        def privateString = privateArgs.collect { key, value ->
+            "${key} *****"
+        }.join(" ")
+        def argsString = args.join(" ") + " " + privateString
+        println "xcrun " + argsString
+        throw new Error("hello")
+        /*return execOperations.exec { ExecSpec es ->
             es.executable('xcrun')
-            es.args(args)
-        }
+            es.args(args + privateArgs.collect { key,value -> "${key} ${value}"})
+        }*/
     }
 }
