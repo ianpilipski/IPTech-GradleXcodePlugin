@@ -50,7 +50,7 @@ class TestFlightExecutor {
         println "xcrun " + argsString
         return execOperations.exec { ExecSpec es ->
             es.executable('xcrun')
-            es.args(args + privateArgs.collect { key,value -> "${key} ${value}"})
+            es.args(args + privateArgs.collectMany { key,value -> [key, value] })
         }
     }
 }
