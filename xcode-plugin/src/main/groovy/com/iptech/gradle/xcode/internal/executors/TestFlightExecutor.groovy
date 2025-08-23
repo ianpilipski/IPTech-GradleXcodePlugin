@@ -48,10 +48,9 @@ class TestFlightExecutor {
         }.join(" ")
         def argsString = args.join(" ") + " " + privateString
         println "xcrun " + argsString
-        throw new Error("hello")
-        /*return execOperations.exec { ExecSpec es ->
+        return execOperations.exec { ExecSpec es ->
             es.executable('xcrun')
             es.args(args + privateArgs.collect { key,value -> "${key} ${value}"})
-        }*/
+        }
     }
 }
